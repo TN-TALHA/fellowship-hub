@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FellowshipHub — Modern Engineering Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo-mark">FH</div>
+    <div class="brand-text">
+      <span class="brand-name">FellowshipHub</span>
+      <span class="brand-tag">Pro · v2.0</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-tab="dashboard"><span class="nav-icon">◈</span><span>Dashboard</span></button>
+    <button class="nav-item" data-tab="board"><span class="nav-icon">◧</span><span>Sprint Board</span></button>
+    <button class="nav-item" data-tab="team"><span class="nav-icon">☰</span><span>Team</span></button>
+    <button class="nav-item" data-tab="ai"><span class="nav-icon">✦</span><span>AI Pairing</span></button>
+    <button class="nav-item" data-tab="safety"><span class="nav-icon">♡</span><span>Safety</span></button>
+    <button class="nav-item" data-tab="governance"><span class="nav-icon">◉</span><span>Governance</span></button>
+    <button class="nav-item" data-tab="metrics"><span class="nav-icon">▲</span><span>Metrics</span></button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="status-dot"></div>
+    <span>Live · Connected</span>
+  </div>
+</aside>
+
+<main class="content">
+  <header class="topbar">
+    <div>
+      <h1 id="page-title">Dashboard</h1>
+      <p class="page-sub" id="page-sub">Real-time overview of your fellowship</p>
+    </div>
+    <div class="topbar-actions">
+      <div class="search-box">
+        <span>⌕</span>
+        <input placeholder="Search tasks..." id="global-search" />
+      </div>
+      <div class="profile-menu">
+        <button class="profile-btn" id="profile-btn">
+          <div class="avatar" id="avatar">?</div>
+          <div class="profile-info">
+            <span id="user-name">Loading...</span>
+            <span id="user-role" class="muted">—</span>
+          </div>
+          <span class="caret">▾</span>
+        </button>
+        <div class="profile-dropdown" id="profile-dropdown">
+          <div class="dd-header">
+            <strong id="dd-name">—</strong>
+            <span class="muted" id="dd-email">—</span>
+          </div>
+          <button id="logout-btn" class="dd-item danger">⎋ Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats-row">
+    <div class="stat-card gradient-blue">
+      <div class="stat-label">Team Members</div>
+      <div class="stat-value" id="stat-fellows">0</div>
+      <div class="stat-meta">Active users</div>
+    </div>
+    <div class="stat-card gradient-purple">
+      <div class="stat-label">Open Tasks</div>
+      <div class="stat-value" id="stat-tasks">0</div>
+      <div class="stat-meta">In pipeline</div>
+    </div>
+    <div class="stat-card gradient-pink">
+      <div class="stat-label">Events</div>
+      <div class="stat-value" id="stat-events">0</div>
+      <div class="stat-meta">Audit trail</div>
+    </div>
+    <div class="stat-card gradient-green">
+      <div class="stat-label">Coverage</div>
+      <div class="stat-value" id="stat-coverage">—</div>
+      <div class="stat-meta">Boy Scout Rule</div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="tab-panel active" id="dashboard">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Quick Team</h2>
+          <span class="pill" id="team-pill">0</span>
+        </div>
+        <ul id="quick-team" class="member-list"></ul>
+        <button class="btn-ghost" id="goto-team">Manage team →</button>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Constitution & Priority Policy</h2>
+          <span class="pill pill-purple">Weighted</span>
+        </div>
+        <ul id="constitution" class="policy-list"></ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Create Task</h2>
+        <span class="pill pill-green">Agile</span>
+      </div>
+      <form id="task-form" class="form-grid">
+        <input name="title" placeholder="Task title" required />
+        <input name="description" placeholder="Description (optional)" />
+        <select name="priority">
+          <option>LOW</option><option selected>MEDIUM</option>
+          <option>HIGH</option><option>CRITICAL</option>
+        </select>
+        <input name="story_points" type="number" value="1" min="1" max="13" placeholder="SP" />
+        <button class="btn-primary">+ Create</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- BOARD -->
+  <section class="tab-panel" id="board">
+    <div class="card">
+      <div class="card-head">
+        <h2>Agile Sprint Board</h2>
+        <div class="filters">
+          <select id="filter-priority" class="mini-select">
+            <option value="">All priorities</option>
+            <option>CRITICAL</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option>
+          </select>
+        </div>
+      </div>
+      <div id="board" class="board"></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="tab-panel" id="team">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Team Members</h2>
+          <span class="pill" id="team-count-pill">0</span>
+        </div>
+        <ul id="team-list" class="team-list"></ul>
+      </div>
+
+      <div class="card" id="add-user-card">
+        <div class="card-head">
+          <h2>Add Member</h2>
+          <span class="pill pill-purple">Admin only</span>
+        </div>
+        <form id="user-form" class="stack-form">
+          <input name="full_name" placeholder="Full name" required />
+          <input name="username" placeholder="Username (for login)" required />
+          <input name="password" type="password" placeholder="Password (min 6 chars)" required />
+          <input name="email" type="email" placeholder="Email (optional)" />
+          <select name="role">
+            <option>Member</option><option>Admin</option>
+          </select>
+          <button class="btn-primary">+ Add Member</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI -->
+  <section class="tab-panel" id="ai">
+    <div class="card">
+      <div class="card-head">
+        <h2>AI-Engineer Pairing</h2>
+        <span class="pill pill-purple">Smart Suggestions</span>
+      </div>
+      <p class="muted">Pick a task → AI suggests an approach + a pair partner.</p>
+      <select id="ai-task-select" class="full-select"></select>
+      <div id="ai-output" class="ai-box"></div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="tab-panel" id="safety">
+    <div class="card">
+      <div class="card-head">
+        <h2>Anonymous Feedback</h2>
+        <span class="pill pill-green">No author stored</span>
+      </div>
+      <form id="feedback-form" class="form-row">
+        <select name="mood">
+          <option value="great">😀 Great</option>
+          <option value="ok">🙂 Okay</option>
+          <option value="concerned">😟 Concerned</option>
+        </select>
+        <input name="message" placeholder="Share anonymously..." required />
+        <button class="btn-primary">Submit</button>
+      </form>
+      <ul id="feedback-list" class="feedback-list"></ul>
+    </div>
+  </section>
+
+  <!-- GOVERNANCE -->
+  <section class="tab-panel" id="governance">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <h2>Activity & Undo</h2>
+          <span class="pill pill-purple">Reversible</span>
+        </div>
+        <p class="muted">Every action can be reversed (↩) if still available.</p>
+        <ul id="event-list" class="event-list"></ul>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Audit Log</h2>
+          <span class="pill">Immutable</span>
+        </div>
+        <ul id="audit-list" class="event-list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="tab-panel" id="metrics">
+    <div class="card">
+      <div class="card-head">
+        <h2>Boy Scout Rule — Codebase Health</h2>
+        <span class="pill pill-green">Before → After</span>
+      </div>
+      <div id="boy-scout" class="metric-grid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Task Detail Drawer -->
+<div class="drawer-bg" id="drawer-bg"></div>
+<aside class="drawer" id="task-drawer">
+  <div class="drawer-head">
+    <h2 id="drawer-title">Task</h2>
+    <button class="close-btn" id="drawer-close">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<!-- Confirm Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Are you sure?</h3>
+    <p id="modal-text" class="muted">This action can be reversed from Governance.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="modal-cancel">Cancel</button>
+      <button class="btn-danger" id="modal-confirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

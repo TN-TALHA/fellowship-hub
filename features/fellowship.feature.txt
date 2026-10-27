@@ -1,0 +1,13 @@
+Feature: Fellowship Task Prioritization
+  As a fellowship lead
+  I want tasks to be prioritized using our constitution
+  So urgent work gets fair attention
+
+  Scenario: Critical outranks Low
+    Given a critical task and a low task created now
+    When the priority engine scores them
+    Then the critical task has a higher score
+
+  Scenario: Anonymous feedback is stored
+    Given I submit feedback with mood "concerned"
+    Then the feedback is stored without an identity

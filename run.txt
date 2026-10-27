@@ -1,0 +1,10 @@
+docker compose down
+docker compose up --build -d
+
+
+
+docker images	Saari built images dikhata hai — naam, size, ID
+docker ps	    Jo containers abhi chal rahe hain wo dikhata hai — ports, status, naam
+docker ps -a	Sab containers — chalu + band dono
+docker logs fellowship-hub-fellowship-hub-1    	Container ke andar Flask server ka output dikhata hai — requests, errors sab
+docker exec -it fellowship-hub-fellowship-hub-1 bash	 Container ke andar shell kholta hai — files dekh sakte ho, code dekh sakte ho

@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: FellowshipHub API
+  version: 1.0.0
+  description: |
+    API-First Design — this contract is written BEFORE implementation.
+    Flask endpoints are implemented to match this spec.
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/fellows:
+    get:
+      summary: List fellows
+      responses: { "200": { description: OK } }
+    post:
+      summary: Register a fellow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email]
+              properties:
+                name: { type: string }
+                email: { type: string }
+      responses: { "201": { description: Created } }
+  /api/tasks:
+    get:
+      summary: Sprint board grouped by status
+      responses: { "200": { description: OK } }
+    post:
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, priority]
+              properties:
+                title: { type: string }
+                description: { type: string }
+                priority: { type: string, enum: [LOW, MEDIUM, HIGH, CRITICAL] }
+                story_points: { type: integer }
+      responses: { "201": { description: Created } }
+  /api/tasks/{id}/ai:
+    get:
+      summary: AI product + pairing suggestion
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { description: Not Found }
+  /api/feedback:
+    get:
+      summary: List feedback
+      responses: { "200": { description: OK } }
+    post:
+      summary: Submit anonymous feedback
+      responses: { "201": { description: Created } }
+  /api/governance:
+    get:
+      summary: Audit summary
+      responses: { "200": { description: OK } }
+  /api/events:
+    get:
+      summary: Event history
+      responses: { "200": { description: OK } }
+  /api/boy-scout:
+    get:
+      summary: Code quality metrics
+      responses: { "200": { description: OK } }
+  /api/constitution:
+    get:
+      summary: Fellowship constitution
+      responses: { "200": { description: OK } }

@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.git/
+.github/
+.env
+
+# Test + tooling artifacts have no business in the runtime image
+tests/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+junit.xml
+htmlcov/
+requirements-dev.txt

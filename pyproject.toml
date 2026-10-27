@@ -1,0 +1,43 @@
+[tool.pytest.ini_options]
+# Lets tests do `import app` / `import services` without a packaging step.
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "tests/*",
+    ".venv/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+# The quality gate: the pipeline goes RED below this number.
+fail_under = 85
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+exclude = [".venv", "__pycache__"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes (undefined names, unused imports)
+    "I",    # import sorting
+    "B",    # bugbear (likely bugs)
+    "UP",   # pyupgrade
+]
+ignore = [
+    "B008",  # function call in default argument — Flask decorators trip this
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]  # asserts are the point of a test file

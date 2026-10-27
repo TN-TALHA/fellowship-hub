@@ -1,0 +1,5 @@
+services:
+  fellowship-hub:
+    build: .
+    ports:
+      - "5000:5000"
